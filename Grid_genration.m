@@ -87,17 +87,17 @@ pcolor(xx,yy1,u);
 figure(3)
 hold on
 for n = 1:numel(x) %// loop over vertical lines
-    plot([xx1(n,1) xx1(n,end)], [yy1(n,1) yy1(n,end)], 'k-'); %// change 'k-' to whatever you need
+    plot([xx1(n,1) xx1(n,end)], [yy1(n,1) yy1(n,end)], 'k-'); 
 end
 for n = 1:numel(y)%// loop over horizontal lines
-    plot([xx1(1,n) xx1(end,n)], [yy1(1,n) yy1(end,n)], 'k-'); %// change 'k-' to whatever you need
+    plot([xx1(1,n) xx1(end,n)], [yy1(1,n) yy1(end,n)], 'k-'); 
 end
 
 figure(4)
 hold on
 for n = 1:numel(x) %// loop over vertical lines
-    plot([xx(n,1) xx(n,end)], [yy1(n,1) yy1(n,end)], 'k-'); %// change 'k-' to whatever you need
+    plot([xx(n,1) xx(n,end)], [yy1(n,1) yy1(n,end)], 'k-');
 end
 for n = 1:numel(y)%// loop over horizontal lines
-    plot([xx(1,n) xx(end,n)], [yy1(1,n) yy1(end,n)], 'k-'); %// change 'k-' to whatever you need
+    plot([xx(1,n) xx(end,n)], [yy1(1,n) yy1(end,n)], 'k-'); 
 end
