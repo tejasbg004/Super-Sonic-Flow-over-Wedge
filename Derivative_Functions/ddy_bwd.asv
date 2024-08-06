@@ -1,0 +1,36 @@
+function [dfdy]= ddy_bwd(f,dxi,deta)
+dxdxi=1;
+
+    J=1; %Jacobian
+    xiy=-1/J*dxdxi;
+    etay=1/J*dxdxi;
+    
+    % determine field size
+    [nx,ny]     = size(f);
+
+    % allocate return field
+    dfdy        = zeros(nx,ny);
+    
+    % backward differencing
+    for i=2:nx
+        for j=2:ny
+            dfdy(i,j) = ((f(i,j)-f(i-1,j))/dxi)*xiy+((f(i,j)-f(i,j-1))/deta)*etay;
+        end
+    end
+    
+    % forward difference for first collumn
+    j = 1;
+    for i=2:nx
+        dfdy(i,j) = ((f(i,j)-f(i-1,j))/dxi)*xiy+((f(i,j+1)-f(i,j))/deta)*etay;
+    end
+
+ % backward difference for last row
+    i=nx;
+    for j=1:ny-1
+        dfdy(i,j) = ((f(i,j)-f(i-1,j))/dxi)*xiy+((f(i,j+1)-f(i,j))/deta)*etay;
+    end
+
+    dfdy(nx,ny) = ((f(nx,ny)-f(nx-1,ny))/dxi)*xiy+((f(nx,ny)-f(nx,ny-1))/deta)*etay;
+
+
+end

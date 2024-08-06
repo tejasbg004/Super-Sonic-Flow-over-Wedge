@@ -1,0 +1,41 @@
+function [dfdx]= ddx_fwd(f,dxi,deta)
+    [nx,ny]     = size(f);
+    L=1*10^-5;
+    H=8*10^-6;
+    y=linspace(0,H,ny);
+    x=linspace(0,L,nx);
+    [xixi,eta]=ndgrid(x,y);
+    dydeta=exp(eta);
+
+    J=1; %Jacobian
+    xix=-1/J*dydeta;
+    etax=1/J*dydeta;
+    
+    % determine field size
+    
+
+    % allocate return field
+    dfdx        = zeros(nx,ny);
+    
+    % forward difference
+    for i=1:nx-1
+        for j=1:ny-1
+            dfdx(i,j) = ((f(i+1,j)-f(i,j))/dxi)*xix(i,j)+((f(i,j+1)-f(i,j))/deta)*etax(i,j);
+        end
+    end
+    
+    % backward difference for last collumn
+    j = ny;
+    for i=1:nx-1
+        dfdx(i,j) = ((f(i+1,j)-f(i,j))/dxi)*xix(i,j)+((f(i,j)-f(i,j-1))/deta)*etax(i,j);
+    end
+
+ % backward difference for last row
+    i=nx;
+    for j=1:ny-1
+        dfdx(i,j) = ((f(i,j)-f(i-1,j))/dxi)*xix(i,j)+((f(i,j+1)-f(i,j))/deta)*etay;
+    end
+
+    dfdx(nx,ny) = ((f(nx,ny)-f(nx-1,ny))/dxi)*xiy+((f(nx,ny)-f(nx,ny-1))/deta)*etay;
+
+end

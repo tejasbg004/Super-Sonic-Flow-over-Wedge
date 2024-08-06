@@ -1,0 +1,44 @@
+function [dfdx]= ddx_central_xi(f,dxi,deta)
+
+[nx,ny]     = size(f);
+    L=1*10^-5;
+    H=8*10^-6;
+    y=linspace(0,H,ny);
+    x=linspace(0,L,nx);
+    [xixi,eta]=ndgrid(x,y);
+    dydeta=exp(eta);
+
+    J=1; %Jacobian
+    xix=-1/J*dydeta;
+    etax=1/J*dydeta;
+    
+    % determine field size
+    
+
+    % allocate return field
+    dfdx        = zeros(nx,ny);
+
+
+    for i=2:nx-1
+        for j=2:ny-1
+            dfdx(i,j) = ((f(i+1,j)-f(i-1,j))/dxi)*xix+((f(i,j+1)-f(i,j-1))/deta)*etax;
+        end
+    end
+    
+    % forward difference for first point
+    j = 1;
+    for i=2:nx-1
+        dfdx(i,j) = ((f(i+1,j)-f(i-1,j))/dxi)*xix+((-3*f(i,j)+4*f(i,j+1)-f(i,j+2))/2/deta)*etax;
+    end
+    
+    % backward difference for last point
+    j = ny;
+    for i=2:ny-1
+        dfdx(i,j) = ((f(i+1,j)-f(i-1,j))/dxi)*xix+((3*f(i,j)-4*f(i,j-1)+f(i,j-2))/2/deta)*etay;
+    end
+dfdx(1,1) = ((3*f(i,j)-4*f(i+1,j)+f(i+2,j))/2/dxi)*xiy+((3*f(i,j)-4*f(i,j+1)+f(i,j+2))/2/dy)*etay;
+dfdx(1,ny) = ((3*f(i,j)-4*f(i+1,j)+f(i+2,j))/2/dxi)*xiy+((3*f(i,j)-4*f(i,j-1)+f(i,j-2))/2/dy)*etay;
+dfdx(nx,1) = ((3*f(i,j)-4*f(i-1,j)+f(i-2,j))/2/dxi)*xiy+((3*f(i,j)-4*f(i,j+1)+f(i,j+2))/2/dy)*etay;
+dfdx(nx,ny) = ((3*f(i,j)-4*f(i-1,j)+f(i-2,j))/2/dxi)*xiy+((3*f(i,j)-4*f(i,j-1)+f(i,j-2))/2/dy)*etay;
+end
+end
